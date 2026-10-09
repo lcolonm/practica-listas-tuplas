@@ -16,6 +16,8 @@ def crear_inventario():
     ]
     return inventario
 
+# Creamos la variable global para otros modulos
+inventario_base = crear_inventario()
 
 def mostrar_inventario(inventario):
     print(interfaz.SEPARADOR_LARGO)
