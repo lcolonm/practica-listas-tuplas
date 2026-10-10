@@ -18,6 +18,9 @@ def mostrar_exito(mensaje):
     print(SEPARADOR_LARGO)
 
 # EN CONSTRUCCIÓN...
+def mostrar_inventario():
+    pass
+
 
 def mostrar_dato(etiqueta: str | int | float | None = "", valor: str | int | float | None = ""):
     # 1. Normalizar si vienen como None

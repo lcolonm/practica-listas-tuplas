@@ -41,15 +41,31 @@ def agregar_por_posicion(inventario_actualizado, indice):
     return inventario_actualizado, nuevo_producto, nuevo_precio
 
 
+# EN CONSTRUCCIÓN: Mejorar / Sobreescribir
 def eliminar_producto(inventario, nombre):
-    # 1. Eliminar por nombre
-    buscador = inventario.index(nombre)
-    
-    for eliminar in buscador:
-        if eliminar == buscador:
-            inventario.remove(buscador)
+    # 1. Eliminar por nombre 
+    # Recorrer el inventario desempaquetando las tuplas
+    for producto, costo in inventario:
+        # Atrapamos el producto a eliminar 
+        if producto == nombre:
+            # .remove() necesita la tupla completa
+            tupla_a_eliminar = (producto, costo)
+            producto_eliminado = inventario.remove(tupla_a_eliminar)
+
+            interfaz.mostrar_exito(f"{nombre} eliminado con éxito.")
+            
         else:
             print("No se encontro el producto. Intente de nuevo con otro nombre.")
+        break
+
+    print(interfaz.SEPARADOR_LARGO)
+    interfaz.mostrar_banner("📝 INVENTARIO ACTUALIZADO 📝")
+    
+    for producto, precio in inventario:
+        valor_formateado = f"${precio:.2f}" if isinstance(precio, (int, float)) else precio
+        interfaz.mostrar_dato(producto, valor_formateado)
+
+    return inventario
         
 
 
@@ -62,5 +78,8 @@ def programa_secundario():
     inventario_actualizado, producto, precio = agregar_producto(inventario_base)
 
     inventario_actualizado, nuevo_producto, nuevo_precio = agregar_por_posicion(inventario_actualizado, 3)
+
+    #CONSTRUCCIÓN...
+    eliminar_producto(inventario_actualizado, "Pechuga de pollo")
 
 programa_secundario()
