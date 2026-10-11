@@ -28,58 +28,38 @@ def agregar_por_posicion(inventario_actualizado, indice):
 
     nuevo_producto, nuevo_precio = inventario_actualizado[indice]
 
-    print(interfaz.SEPARADOR_LARGO)
-    interfaz.mostrar_banner("📝 INVENTARIO ACTUALIZADO 📝")
-
-    for producto, precio in inventario_actualizado:
-
-        if isinstance(precio, (int, float)):
-            interfaz.mostrar_dato(producto, f"${precio:.2f}")
-        else:
-            interfaz.mostrar_dato(producto, precio)
+    interfaz.mostrar_inventario(inventario_actualizado, "📝 INVENTARIO DE PRODUCTOS ACTUALIZADO 📝")
 
     return inventario_actualizado, nuevo_producto, nuevo_precio
 
 
-# EN CONSTRUCCIÓN: Mejorar / Sobreescribir
 def eliminar_producto(inventario, nombre):
-    # 1. Eliminar por nombre 
-    # Recorrer el inventario desempaquetando las tuplas
-    for producto, costo in inventario:
-        # Atrapamos el producto a eliminar 
-        if producto == nombre:
-            # .remove() necesita la tupla completa
-            tupla_a_eliminar = (producto, costo)
-            producto_eliminado = inventario.remove(tupla_a_eliminar)
-
-            interfaz.mostrar_exito(f"{nombre} eliminado con éxito.")
-            
-        else:
-            print("No se encontro el producto. Intente de nuevo con otro nombre.")
-        break
-
-    print(interfaz.SEPARADOR_LARGO)
-    interfaz.mostrar_banner("📝 INVENTARIO ACTUALIZADO 📝")
+    lista = list(inventario) # Por seguridad pasamos a lista.
     
-    for producto, precio in inventario:
-        valor_formateado = f"${precio:.2f}" if isinstance(precio, (int, float)) else precio
-        interfaz.mostrar_dato(producto, valor_formateado)
+    for producto, costo in lista:
+        if producto == nombre:
+            # El método .remove busca y borra el elemento exacto tal como viene 
+            # por ello le pasamos la tupla completa.
+            lista.remove((producto, costo)) 
+            interfaz.mostrar_exito(f"'{nombre}' eliminado con éxito.")
+            break  # Rompe el bucle porque ya lo encontró.
+    else:
+        # Este else pertenece al FOR, no al IF. 
+        # Solo se ejecuta si el bucle terminó todas sus vueltas y nunca tocó el break.
+        print(f"⚠️ No se encontró el producto '{nombre}'.")
 
-    return inventario
-        
+    inventario_actualizado = tuple(lista)
 
+    interfaz.mostrar_inventario(inventario_actualizado, "📝 INVENTARIO DE PRODUCTOS ACTUALIZADO 📝")
 
-
-
-
-
+    return inventario_actualizado
+           
 def programa_secundario():
 
     inventario_actualizado, producto, precio = agregar_producto(inventario_base)
 
     inventario_actualizado, nuevo_producto, nuevo_precio = agregar_por_posicion(inventario_actualizado, 3)
 
-    #CONSTRUCCIÓN...
-    eliminar_producto(inventario_actualizado, "Pechuga de pollo")
+    inventario_actualizado = eliminar_producto(inventario_actualizado, "Pechuga de pollo")
 
 programa_secundario()
